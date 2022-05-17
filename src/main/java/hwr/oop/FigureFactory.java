@@ -1,11 +1,9 @@
 package hwr.oop;
 
 public interface FigureFactory {
-    static BlackFigure createBlackFigure(){
-        return new BlackFigure();
-    }
-    static WhiteFigure createWhiteFigure(){
-        return  new WhiteFigure();
+    static Figure createFigure(boolean isBlack){
+        return new Figure(isBlack);
     }
 
+    boolean figureColorIsBlack();
 }
