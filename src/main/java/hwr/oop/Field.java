@@ -1,7 +1,5 @@
 package hwr.oop;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Field {
     List spielfeld;
@@ -9,41 +7,27 @@ public class Field {
     public Field(String language) {
         boolean equalsResult = language.equals("German");
         if (equalsResult) {
-            spielfeld = new ArrayList<>();
-            int x = 1;
-            for (int i = 0; i < 4; i++) {
-                spielfeld.add(FigureFactory.createFigure(false,x,"A"));
-                x += 2;
+            spielfeld = new Figure[8][8];
+
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (i % 2 == 1 && j % 2 == 1 && i <= 2) {
+                        spielfeld[i][j] = new Figure(1, j, i, false);
+                    } else if (i % 2 == 0 && j % 2 == 0 && i <= 2) {
+                        spielfeld[i][j] = new Figure(1, j, i, false);
+                    } else if (i % 2 == 1 && j % 2 == 1 && i >= 5) {
+                        spielfeld[i][j] = new Figure(2, j, i, false);
+                    } else if (i % 2 == 0 && j % 2 == 0 && i >= 5) {
+                        spielfeld[i][j] = new Figure(2, j, i, false);
+                    } else {
+                        spielfeld[i][j] = new Figure(0, j, i, false);
+                    }
+                }
             }
-            x = 2;
-            for (int i = 0; i < 4; i++) {
-                spielfeld.add(FigureFactory.createFigure(false,x,"B"));
-                x += 2;
-            }
-            x = 1;
-            for (int i = 0; i < 4; i++) {
-                spielfeld.add(FigureFactory.createFigure(false,x,"C"));
-                x += 2;
-            }
-            x = 1;
-            for (int i = 0; i < 4; i++) {
-                spielfeld.add(FigureFactory.createFigure(true,x,"H"));
-                x += 2;
-            }
-            x = 2;
-            for (int i = 0; i < 4; i++) {
-                spielfeld.add(FigureFactory.createFigure(true,x,"G"));
-                x += 2;
-            }
-            x = 1;
-            for (int i = 0; i < 4; i++) {
-                spielfeld.add(FigureFactory.createFigure(true,x,"F"));
-                x += 2;
-            }
+
         }
     }
-    public List getList() {
+    public Figure[][] getPositionList() {
         return spielfeld;
     }
 }
-

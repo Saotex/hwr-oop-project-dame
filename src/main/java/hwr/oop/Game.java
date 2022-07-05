@@ -1,19 +1,43 @@
 package hwr.oop;
 
-import java.util.List;
-import java.util.ListIterator;
-import java.util.stream.Collectors;
-
 public class Game {
+    Field field;
+    boolean isWhite = true;
 
-    List spielfeld;
     Game(String game){
         if(game.equals("German")){
-            Field field = new Field("German");
-            spielfeld = field.getList();
+            field = new Field("German");
         }
     }
-    public FigureFactory getValueAt(String xy) {
+
+    void gameLife(){
+        spielfeld();
+        isGameWon();
+        amZug();
+        //move();
+    }
+
+    void spielfeld() {
+        for (int i = 7; i >= 0; i--) {
+            System.out.println();
+            for (int j = 0; j < 8; j++) {
+                System.out.print(field.getPositionList()[i][j].getState()+"  ");
+            }
+        }
+    }
+
+    private void isGameWon() {
+
+    }
+
+    private void amZug() {
+        if(!isWhite){
+            System.out.println("Schwarz ist am Zug!");
+        } else {
+            System.out.println("Weiß ist am Zug!");
+        }
+    }
+   /* public FigureFactory getValueAt(String xy) {
         int x = 0;
         for (int i = 0; i < 24; i++) {
             FigureFactory figure = (FigureFactory) spielfeld.get(x);
@@ -23,10 +47,45 @@ public class Game {
             x += 1;
         }
         return null;
-    }
+    }*/
 
-    public void move(String oldPos, String newPos) {
-        FigureFactory figure = getValueAt(oldPos);
-        figure.setPos(newPos);
+    public void move(int oldX, int oldY, int newX, int newY) {
+
+        if(field.getPositionList()[newY][newX].getState() == 0) {
+            if (
+                    ((field.getPositionList()[oldY][oldX].getState() == 1) && isWhite) ||
+                            (field.getPositionList()[oldY][oldX].getState() == 2) && !isWhite
+            ) {
+                if (
+                        (isWhite && newY > oldY && field.getPositionList()[newY][newX].getState() == 0) &&
+                                (newY - oldY == 1 && Math.abs(newX - oldX) == 1)
+                ) {
+                    field.getPositionList()[oldY][oldX].setState(0);
+                    field.getPositionList()[newY][newX].setState(1);
+                    isWhite = !isWhite;
+                } else {
+                    System.out.println("Falscher Zug");
+                }
+                if (
+                        (!isWhite && newY < oldY) &&
+                                (oldY - newY == 1 && Math.abs(newX - oldX) == 1)) {
+                    field.getPositionList()[oldY][oldX].setState(0);
+                    field.getPositionList()[newY][newX].setState(2);
+                    isWhite = !isWhite;
+
+                } else {
+                    System.out.println("Falscher Zug");
+                }
+                /*if (
+                        isWhite && newY > oldY &&
+                ) {
+
+                }*/
+            }else {
+                System.out.println("Falscher Zug");
+            }
+        }else {
+            System.out.println("Falscher Zug");
+        }
     }
 }

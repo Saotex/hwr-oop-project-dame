@@ -13,7 +13,7 @@ public class GameTest {
         Game game = new Game("German");
         FigureFactory figure = game.getValueAt("1A");
         assertThat(figure).isNotNull();
-        assertThat(figure.isFigureColorBlack()).isFalse();
+        assertThat(figure.isDame()).isFalse();
         assertThat(figure.getPosition()).isEqualTo("1A");
     }
     @Test
@@ -22,7 +22,7 @@ public class GameTest {
         game.move("1C","2D");
         FigureFactory figure = game.getValueAt("2D");
         assertThat(figure.getPosition()).isEqualTo("2D");
-        assertThat(figure.isFigureColorBlack()).isFalse();
+        assertThat(figure.isDame()).isFalse();
         figure = game.getValueAt("1C");
         assertThat(figure).isNull();
     }

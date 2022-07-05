@@ -1,5 +1,5 @@
 package hwr.oop;
-class Figure implements FigureFactory {
+class Figure {
 
     private final boolean isBlack;
     private String position;
@@ -15,13 +15,11 @@ class Figure implements FigureFactory {
         return isBlack;
     }
 
-    @Override
     public String getPosition() {
         return position;
     }
 
-    @Override
-    public void setPos(String newPos) {
-        position = newPos;
+    public void setState(int state) {
+        this.state = state;
     }
 }
