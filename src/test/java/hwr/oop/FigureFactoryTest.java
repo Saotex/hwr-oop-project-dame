@@ -8,17 +8,17 @@ public class FigureFactoryTest {
 
     @Test
     void create_FigureOverInterfaceBlack(){
-        FigureFactory figureBlack = FigureFactory.createFigure(true);
+        FigureFactory figureBlack = FigureFactory.createFigure(true,1,"A");
         assertThat(figureBlack).isInstanceOf(Object.class).isInstanceOf(FigureFactory.class).isInstanceOf(Figure.class);
-        boolean isBlack = figureBlack.figureColorIsBlack();
+        boolean isBlack = figureBlack.isFigureColorBlack();
         assertThat(isBlack).isTrue();
     }
 
     @Test
     void create_FigureOverInterfaceWhite(){
-        FigureFactory figureWhite = FigureFactory.createFigure(false);
+        FigureFactory figureWhite = FigureFactory.createFigure(false,1,"A");
         assertThat(figureWhite).isInstanceOf(Object.class).isInstanceOf(FigureFactory.class).isInstanceOf(Figure.class);
-        boolean isBlack = figureWhite.figureColorIsBlack();
+        boolean isBlack = figureWhite.isFigureColorBlack();
         assertThat(isBlack).isFalse();
     }
 }

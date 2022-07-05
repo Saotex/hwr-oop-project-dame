@@ -14,4 +14,13 @@ public class FieldTest {
         List list = field.getList();
         assertThat(list.size()).isEqualTo(24);
     }
+
+    @Test
+    void field_german_get_position(){
+        Field field = new Field("German");
+        List list = field.getList();
+        FigureFactory figure = (FigureFactory) list.get(0);
+        assertThat(figure.getPosition()).isEqualTo("1A");
+        assertThat(figure.isFigureColorBlack()).isFalse();
+    }
 }
