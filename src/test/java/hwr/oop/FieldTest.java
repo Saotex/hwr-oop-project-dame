@@ -2,26 +2,25 @@ package hwr.oop;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 public class FieldTest {
 
-
     @Test
-    void createGermanField(){
-        Field spielfeld = new Field(8);
+    void field_german_creation_game(){
+        Field field = new Field("German");
+        List list = field.getList();
+        assertThat(list.size()).isEqualTo(24);
     }
 
     @Test
-    void createRechteckigesField(){
-        Field spielfeld = new Field(8,9);
-    }
-
-    @Test
-    void cantCreateField_FieldToSmallY(){
-        Field spielfeld = new Field(8,5);
-    }
-
-    @Test
-    void cantCreateFiekd_FieldToSmallX(){
-        Field spielfeld = new Field(2,6);
+    void field_german_get_position(){
+        Field field = new Field("German");
+        List list = field.getList();
+        FigureFactory figure = (FigureFactory) list.get(0);
+        assertThat(figure.getPosition()).isEqualTo("1A");
+        assertThat(figure.isFigureColorBlack()).isFalse();
     }
 }

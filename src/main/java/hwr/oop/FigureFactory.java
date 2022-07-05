@@ -1,9 +1,15 @@
 package hwr.oop;
 
 public interface FigureFactory {
-    static Figure createFigure(boolean isBlack){
-        return new Figure(isBlack);
+
+    static Figure createFigure(boolean isBlack, int x, String y) {
+        return new Figure(isBlack, x, y);
     }
 
-    boolean figureColorIsBlack();
+
+    boolean isFigureColorBlack();
+
+    String getPosition();
+
+    void setPos(String newPos);
 }
