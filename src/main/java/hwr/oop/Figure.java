@@ -1,22 +1,28 @@
 package hwr.oop;
 class Figure {
 
-    private final boolean isBlack;
-    private String position;
+    private int state;
+    // 0=empty; 1=white; 2=black
+    private int x;
+    private int y;
+    private boolean isDame;
 
-    public Figure(boolean isBlack, int x, String y) {
-        this.isBlack = isBlack;
-        String zahl = Integer.toString(x);
-        position = zahl+y;
+    public Figure(int state, int x, int y, boolean dame) {
+        this.state = state;
+        this.x = x;
+        this.y = y;
+        this.isDame = dame;
     }
 
-    @Override
-    public boolean isFigureColorBlack() {
-        return isBlack;
+    public int getState() {
+        return state;
+    }
+    public boolean isDame() {
+        return isDame;
     }
 
     public String getPosition() {
-        return position;
+        return (Integer.toString(x)+Integer.toString(y));
     }
 
     public void setState(int state) {

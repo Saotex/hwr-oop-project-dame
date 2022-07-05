@@ -2,9 +2,10 @@ package hwr.oop;
 
 
 public class Field {
-    List spielfeld;
+    Figure[][] spielfeld;
 
     public Field(String language) {
+
         boolean equalsResult = language.equals("German");
         if (equalsResult) {
             spielfeld = new Figure[8][8];

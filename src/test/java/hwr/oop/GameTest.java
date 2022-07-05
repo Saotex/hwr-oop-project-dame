@@ -2,13 +2,11 @@ package hwr.oop;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class GameTest {
 
-    @Test
+/*    @Test
     void get_Position_WhiteFigure(){
         Game game = new Game("German");
         FigureFactory figure = game.getValueAt("1A");
@@ -30,5 +28,5 @@ public class GameTest {
     @Test
     void move_notAllowed_Figure(){
 
-    }
+    }*/
 }
