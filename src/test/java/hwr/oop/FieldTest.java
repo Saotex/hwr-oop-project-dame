@@ -2,25 +2,28 @@ package hwr.oop;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class FieldTest {
 
     @Test
-    void field_german_creation_game(){
+    void field_initial_positions(){
         Field field = new Field("German");
-        List list = field.getList();
-        assertThat(list.size()).isEqualTo(24);
+        for (int i = 0; i < 8; i++) {
+            System.out.println();
+            for (int j = 0; j < 8; j++) {
+                System.out.print(field.getPositionList()[i][j].getState()+"  ");
+            }
+        }
+        assertThat(field.getPositionList()[0][0].getState()).isEqualTo(1);
+        assertThat(field.getPositionList()[6][0].getState()).isEqualTo(2);
+        assertThat(field.getPositionList()[3][3].getState()).isEqualTo(0);
+        assertThat(field.getPositionList()[0][1].isDame()).isFalse();
+        assertThat(field.getPositionList()[0][0].getPosition()).isEqualTo("00");
     }
-
     @Test
-    void field_german_get_position(){
-        Field field = new Field("German");
-        List list = field.getList();
-        FigureFactory figure = (FigureFactory) list.get(0);
-        assertThat(figure.getPosition()).isEqualTo("1A");
-        assertThat(figure.isFigureColorBlack()).isFalse();
+    void spielfeld(){
+        Game game = new Game("German");
+        game.spielfeld();
     }
 }
