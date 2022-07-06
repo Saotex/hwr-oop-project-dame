@@ -1,5 +1,7 @@
 package hwr.oop;
 
+import java.util.Scanner;
+
 public class Game {
     Field field;
     boolean isWhite = true;
@@ -8,13 +10,23 @@ public class Game {
         if(game.equals("German")){
             field = new Field("German");
         }
+        spielfeld();
+        gameLife();
     }
 
     void gameLife(){
-        spielfeld();
-        isGameWon();
-        amZug();
-        //move();
+        while(!isGameWon()) {
+            amZug();
+            String[] positionen = getPositionFromPlayer();
+            move(Integer.parseInt(positionen[0]),Integer.parseInt(positionen[1]),Integer.parseInt(positionen[2]),Integer.parseInt(positionen[3]));
+            spielfeld();
+        }
+    }
+
+    private String[] getPositionFromPlayer() {
+        Scanner scan = new Scanner(System.in);
+        String positionen = scan.next();
+        return positionen.split(",");
     }
 
     void spielfeld() {
@@ -26,8 +38,22 @@ public class Game {
         }
     }
 
-    private void isGameWon() {
-
+    private boolean isGameWon() {
+        boolean wonBlack = false;
+        boolean wonWhite = false;
+        for (int i = 0; i < field.getPositionList().length; i++) {
+            for (int j = 0; j < field.getPositionList().length; j++) {
+                if(field.getPositionList()[j][i].getState() == 1){
+                    wonWhite = true;
+                } else if(field.getPositionList()[j][i].getState() == 2){
+                    wonBlack = true;
+                }
+            }
+            if (wonBlack && wonWhite){
+                return false;
+            }
+        }
+        return false;
     }
 
     private void amZug() {
@@ -37,17 +63,6 @@ public class Game {
             System.out.println("Weiß ist am Zug!");
         }
     }
-   /* public FigureFactory getValueAt(String xy) {
-        int x = 0;
-        for (int i = 0; i < 24; i++) {
-            FigureFactory figure = (FigureFactory) spielfeld.get(x);
-            if(figure.getPosition().equals(xy)){
-                return figure;
-            }
-            x += 1;
-        }
-        return null;
-    }*/
 
     public void move(int oldX, int oldY, int newX, int newY) {
 
