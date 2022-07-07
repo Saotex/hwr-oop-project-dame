@@ -28,4 +28,8 @@ class Figure {
     public void setState(int state) {
         this.state = state;
     }
+
+    public void setDame() {
+        isDame = true;
+    }
 }

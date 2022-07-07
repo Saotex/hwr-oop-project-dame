@@ -64,52 +64,89 @@ public class Game {
     }
 
     public void move(int oldX, int oldY, int newX, int newY) {
-
-        if(field.getPositionList()[newY][newX].getState() == 0) {
+        Figure oldPosition = field.getPositionList()[oldY][oldX];
+        Figure newPosition = field.getPositionList()[newY][newX];
+        if(newPosition.getState() == 0) {                               //?neues Feld leer
             if (
-                    ((field.getPositionList()[oldY][oldX].getState() == 1) && isWhite) ||
-                            (field.getPositionList()[oldY][oldX].getState() == 2) && !isWhite
-            ) {
-                if (
-                        (isWhite && newY > oldY && field.getPositionList()[newY][newX].getState() == 0) &&
-                                (newY - oldY == 1 && Math.abs(newX - oldX) == 1)
-                ) {
-                    field.getPositionList()[oldY][oldX].setState(0);
-                    field.getPositionList()[newY][newX].setState(1);
-                    isWhite = !isWhite;
-                }else if (
-                        (!isWhite && newY < oldY) &&
-                                (oldY - newY == 1 && Math.abs(newX - oldX) == 1)) {
-                    field.getPositionList()[oldY][oldX].setState(0);
-                    field.getPositionList()[newY][newX].setState(2);
-                    isWhite = !isWhite;
+                    ((oldPosition.getState() == 1) && isWhite) ||
+                            (oldPosition.getState() == 2) && !isWhite
+            ) {                                                                                 //?richtiger Spieler am Zug
+                if (!oldPosition.isDame()){
+                    if (
+                            (isWhite && newY > oldY) &&
+                                    (newY - oldY == 1 && Math.abs(newX - oldX) == 1)
+                    ) {                                                                             //?gültiger Zug Weiß
+                        oldPosition.setState(0);
+                        newPosition.setState(1);
+                        isWhite = !isWhite;
+                    }else if (                                                                      //?gültiger Zug Schwarz
+                            (!isWhite && newY < oldY) &&
+                                    (oldY - newY == 1 && Math.abs(newX - oldX) == 1)) {
+                        oldPosition.setState(0);
+                        newPosition.setState(2);
+                        isWhite = !isWhite;
 
-                }else if (
-                        (isWhite && newY > oldY && field.getPositionList()[newY][newX].getState() == 0) &&
-                (newY - oldY == 2 && Math.abs(newX - oldX) == 2)
-                ){
-                    field.getPositionList()[oldY][oldX].setState(0);
-                    field.getPositionList()[newY][newX].setState(1);
-                    if (newX - oldX == -2){
-                        field.getPositionList()[newY-1][oldX-1].setState(0);
-                    }else {
-                        field.getPositionList()[newY-1][oldX+1].setState(0);
+                    }else if (                                                                      //?gültiger Zug Weiß Schlagen
+                            (isWhite && newY > oldY) &&
+                                    (newY - oldY == 2 && Math.abs(newX - oldX) == 2)
+                    ){
+                        oldPosition.setState(0);
+                        newPosition.setState(1);
+                        if (newX - oldX == -2){
+                            field.getPositionList()[newY-1][oldX-1].setState(0);
+                        }else {
+                            field.getPositionList()[newY-1][oldX+1].setState(0);
+                        }
+                        isWhite = !isWhite;
+                    }else if (                                                                         //?gültiger Zug Schwarz Schlagen
+                            (!isWhite && newY < oldY) &&
+                                    (oldY - newY == 2 && Math.abs(newX - oldX) == 2)
+                    ){
+                        oldPosition.setState(0);
+                        newPosition.setState(2);
+                        if (newX - oldX == -2){
+                            field.getPositionList()[newY+1][oldX-1].setState(0);
+                        }else {
+                            field.getPositionList()[newY+1][oldX+1].setState(0);
+                        }
+                        isWhite = !isWhite;
+                    }if (newPosition.getState()==1 && newY == 7) {  //wird Weiß Dame
+                        newPosition.setDame();
+                    } else if (newPosition.getState()==2 && newY == 0) {  //wird Schwarz Dame
+                        newPosition.setDame();
                     }
-                    isWhite = !isWhite;
-                }else if (
-                        (!isWhite && newY < oldY && field.getPositionList()[newY][newX].getState() == 0) &&
-                                (oldY - newY == 2 && Math.abs(newX - oldX) == 2)
-                ){
-                    field.getPositionList()[oldY][oldX].setState(0);
-                    field.getPositionList()[newY][newX].setState(2);
-                    if (newX - oldX == -2){
-                        field.getPositionList()[newY+1][oldX-1].setState(0);
-                    }else {
-                        field.getPositionList()[newY+1][oldX+1].setState(0);
+                }else {                 //Damen-Logik
+                    if (Math.abs(newX-oldX) == 1 && Math.abs(newY-oldY) == 1){              //gültiger Zug
+                        newPosition.setState(oldPosition.getState());
+                        oldPosition.setState(0);
+                    } else if ((Math.abs(newX-oldX) == 2 && Math.abs(newY-oldY) == 2)) // gültiger Zug schlagen
+                    {
+                        if (oldY<newY && oldX>newX && !(field.getPositionList()[oldY+1][oldX-1].getState() == oldPosition.getState()) && field.getPositionList()[oldY+1][oldX-1].getState() != 0){ //Gegner links-oben
+                            newPosition.setState(oldPosition.getState());
+                            oldPosition.setState(0);
+                            field.getPositionList()[oldY+1][oldX-1].setState(0);
+                        } else if (oldY>newY && oldX>newX && !(field.getPositionList()[oldY-1][oldX-1].getState() == oldPosition.getState()) && field.getPositionList()[oldY-1][oldX-1].getState() != 0) { //Gegner links-unten
+                            newPosition.setState(oldPosition.getState());
+                            oldPosition.setState(0);
+                            field.getPositionList()[oldY-1][oldX-1].setState(0);
+                        } else if (oldY<newY && oldX<newX && !(field.getPositionList()[oldY+1][oldX+1].getState() == oldPosition.getState()) && field.getPositionList()[oldY+1][oldX+1].getState() != 0) { //Gegner rechts-oben
+                            newPosition.setState(oldPosition.getState());
+                            oldPosition.setState(0);
+                            field.getPositionList()[oldY+1][oldX+1].setState(0);
+                        } else if (oldY>newY && oldX<newX && !(field.getPositionList()[oldY-1][oldX+1].getState() == oldPosition.getState()) && field.getPositionList()[oldY-1][oldX+1].getState() != 0) { //Gegner rechts-unten
+                            newPosition.setState(oldPosition.getState());
+                            oldPosition.setState(0);
+                            field.getPositionList()[oldY-1][oldX+1].setState(0);
+                        } else {
+                            System.out.println("Kein gegner zu schlagen");
+                        }
+                    } else {
+                        System.out.println("Ungültiger Zug!");
                     }
-                    isWhite = !isWhite;
                 }
+
             }else {
+                System.out.println("Falscher Spieler:");
                 amZug();
             }
         }else {
