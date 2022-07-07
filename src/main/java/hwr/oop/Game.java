@@ -11,9 +11,8 @@ public class Game {
             field = new Field("German");
         }
         spielfeld();
-        gameLife();
     }
-
+/*
     void gameLife(){
         while(!isGameWon()) {
             amZug();
@@ -21,9 +20,9 @@ public class Game {
             move(Integer.parseInt(positionen[0]),Integer.parseInt(positionen[1]),Integer.parseInt(positionen[2]),Integer.parseInt(positionen[3]));
             spielfeld();
         }
-    }
+    }  ist im manuellen Test */
 
-    private String[] getPositionFromPlayer() {
+    String[] getPositionFromPlayer() {
         Scanner scan = new Scanner(System.in);
         String positionen = scan.next();
         return positionen.split(",");
@@ -38,7 +37,7 @@ public class Game {
         }
     }
 
-    private boolean isGameWon() {
+    boolean isGameWon() {
         boolean wonBlack = false;
         boolean wonWhite = false;
         for (int i = 0; i < field.getPositionList().length; i++) {
@@ -56,11 +55,11 @@ public class Game {
         return false;
     }
 
-    private void amZug() {
-        if(!isWhite){
-            System.out.println("Schwarz ist am Zug!");
-        } else {
+    void amZug() {
+        if(isWhite){
             System.out.println("Weiß ist am Zug!");
+        } else {
+            System.out.println("Schwarz ist am Zug!");
         }
     }
 
@@ -78,29 +77,43 @@ public class Game {
                     field.getPositionList()[oldY][oldX].setState(0);
                     field.getPositionList()[newY][newX].setState(1);
                     isWhite = !isWhite;
-                } else {
-                    System.out.println("Falscher Zug");
-                }
-                if (
+                }else if (
                         (!isWhite && newY < oldY) &&
                                 (oldY - newY == 1 && Math.abs(newX - oldX) == 1)) {
                     field.getPositionList()[oldY][oldX].setState(0);
                     field.getPositionList()[newY][newX].setState(2);
                     isWhite = !isWhite;
 
-                } else {
-                    System.out.println("Falscher Zug");
+                }else if (
+                        (isWhite && newY > oldY && field.getPositionList()[newY][newX].getState() == 0) &&
+                (newY - oldY == 2 && Math.abs(newX - oldX) == 2)
+                ){
+                    field.getPositionList()[oldY][oldX].setState(0);
+                    field.getPositionList()[newY][newX].setState(1);
+                    if (newX - oldX == -2){
+                        field.getPositionList()[newY-1][oldX-1].setState(0);
+                    }else {
+                        field.getPositionList()[newY-1][oldX+1].setState(0);
+                    }
+                    isWhite = !isWhite;
+                }else if (
+                        (!isWhite && newY < oldY && field.getPositionList()[newY][newX].getState() == 0) &&
+                                (oldY - newY == 2 && Math.abs(newX - oldX) == 2)
+                ){
+                    field.getPositionList()[oldY][oldX].setState(0);
+                    field.getPositionList()[newY][newX].setState(2);
+                    if (newX - oldX == -2){
+                        field.getPositionList()[newY+1][oldX-1].setState(0);
+                    }else {
+                        field.getPositionList()[newY+1][oldX+1].setState(0);
+                    }
+                    isWhite = !isWhite;
                 }
-                /*if (
-                        isWhite && newY > oldY &&
-                ) {
-
-                }*/
             }else {
-                System.out.println("Falscher Zug");
+                amZug();
             }
         }else {
-            System.out.println("Falscher Zug");
+            System.out.println("Ungültiger Zug, das neue Feld muss frei sein!");
         }
     }
 }
