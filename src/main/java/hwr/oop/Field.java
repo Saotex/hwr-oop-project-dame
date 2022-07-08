@@ -4,10 +4,12 @@ package hwr.oop;
 public class Field {
     Figure[][] spielfeld;
 
-    public Field(String language) {
+    public void setFigure(Figure oldFigure, int newX, int newY, Figure newFigure, int oldX, int oldY) {
+        this.spielfeld[oldY][oldX] = newFigure;
+        this.spielfeld[newY][newX] = oldFigure;
+    }
 
-        boolean equalsResult = language.equals("German");
-        if (equalsResult) {
+    public Field() {
             spielfeld = new Figure[8][8];
 
             for (int i = 0; i < 8; i++) {
@@ -26,7 +28,7 @@ public class Field {
                 }
             }
 
-        }
+
     }
     public Figure[][] getPositionList() {
         return spielfeld;

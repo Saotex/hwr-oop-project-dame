@@ -9,26 +9,14 @@ public class Game {
     Field field;
     boolean isWhite = true;
 
-    Game(String game){
-        if(game.equals("German")){
-            field = new Field("German");
-        }
+    Game(){
+        field = new Field();
         spielfeld();
+        amZug();
     }
-/*
-    void gameLife(){
-        while(!isGameWon()) {
-            amZug();
-            String[] positionen = getPositionFromPlayer();
-            move(Integer.parseInt(positionen[0]),Integer.parseInt(positionen[1]),Integer.parseInt(positionen[2]),Integer.parseInt(positionen[3]));
-            spielfeld();
-        }
-    }  ist im manuellen Test */
-
-    String[] getPositionFromPlayer() {
+    String getInputFromPlayer() {
         Scanner scan = new Scanner(System.in);
-        String positionen = scan.next();
-        return positionen.split(",");
+        return scan.next();
     }
     void spielfeld() {
         for (int i = 7; i >= 0; i--) {
@@ -39,7 +27,6 @@ public class Game {
         }
         System.out.println();
     }
-
     boolean isGameWon() {
         boolean wonBlack = false;
         boolean wonWhite = false;
@@ -53,6 +40,10 @@ public class Game {
             }
             if (wonBlack && wonWhite){
                 return false;
+            } else if (wonBlack) {
+                return true;
+            }else if (wonWhite){
+                return true;
             }
         }
         return false;
@@ -131,7 +122,7 @@ public class Game {
     void move(int oldX, int oldY, int newX, int newY) {
         Figure oldPosition = field.getPositionList()[oldY][oldX];
         Figure newPosition = field.getPositionList()[newY][newX];
-        if(newPosition.getState() == 0) {                               //?neues Feld leer
+        if(newPosition.getState() == 0 && oldPosition.getState() != 0) {                               //?neues Feld leer
             if (
                     ((oldPosition.getState() == 1) && isWhite) ||
                             (oldPosition.getState() == 2) && !isWhite
@@ -141,37 +132,38 @@ public class Game {
                             (isWhite && newY > oldY) &&
                                     (newY - oldY == 1 && Math.abs(newX - oldX) == 1)
                     ) {                                                                             //?gültiger Zug Weiß
-                        oldPosition.setState(0);
-                        newPosition.setState(1);
+                        field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                         isWhite = !isWhite;
                     }else if (                                                                      //?gültiger Zug Schwarz
                             (!isWhite && newY < oldY) &&
                                     (oldY - newY == 1 && Math.abs(newX - oldX) == 1)) {
-                        oldPosition.setState(0);
-                        newPosition.setState(2);
+                        field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                         isWhite = !isWhite;
 
                     }else if (                                                                      //?gültiger Zug Weiß Schlagen
                             (isWhite && newY > oldY) &&
                                     (newY - oldY == 2 && Math.abs(newX - oldX) == 2)
                     ){
-                        oldPosition.setState(0);
-                        newPosition.setState(1);
-                        if (newX - oldX == -2){
+                        if (newX - oldX == -2 && field.getPositionList()[newY-1][oldX-1].getState() == 2){
                             field.getPositionList()[newY-1][oldX-1].setState(0);
-                        }else {
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
+                            isWhite = !isWhite;
+                        }else if (newX - oldX == 2 && field.getPositionList()[newY-1][oldX+1].getState() == 2){
                             field.getPositionList()[newY-1][oldX+1].setState(0);
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
+                            isWhite = !isWhite;
+                        }else{
+                            System.out.println("Kein gültiger Zug!");
                         }
-                        isWhite = !isWhite;
                     }else if (                                                                         //?gültiger Zug Schwarz Schlagen
                             (!isWhite && newY < oldY) &&
                                     (oldY - newY == 2 && Math.abs(newX - oldX) == 2)
                     ){
-                        oldPosition.setState(0);
-                        newPosition.setState(2);
-                        if (newX - oldX == -2){
+                        if (newX - oldX == -2 && field.getPositionList()[newY+1][oldX-1].getState() == 1){
                             field.getPositionList()[newY+1][oldX-1].setState(0);
-                        }else {
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
+                            isWhite = !isWhite;
+                        }else if (newX - oldX == 2 && field.getPositionList()[newY+1][oldX+1].getState() == 1){
                             field.getPositionList()[newY+1][oldX+1].setState(0);
                             field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                             isWhite = !isWhite;

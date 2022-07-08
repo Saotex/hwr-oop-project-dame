@@ -6,18 +6,15 @@ public class ManuellTest {
 
     @Test
     void play_game(){
-        Game game = new Game("German");
+        Game game = new Game();
         while(!game.isGameWon()) {
-            game.amZug();
-            String[] positionen = game.getPositionFromPlayer();
-            game.move(Integer.parseInt(positionen[0]),Integer.parseInt(positionen[1]),Integer.parseInt(positionen[2]),Integer.parseInt(positionen[3]));
-            game.spielfeld();
+            game.move(game.move(""););
         }
     }
     @Test
     void createDame(){
-        Game game = new Game("German");
-        while(!game.isGameWon()) {
+        Game game = new Game();
+        //while(!game.isGameWon()) {
             spielzug(game,"0,2,1,3");
             spielzug(game,"3,5,2,4");
             spielzug(game,"1,3,0,4");
@@ -31,7 +28,7 @@ public class ManuellTest {
             spielzug(game,"0,2,1,3");
             spielzug(game,"3,5,4,4");
             spielzug(game,"1,7,3,5");
-        }
+        //}
     }
     static void spielzug(Game game, String positionen){
         String[] pos = positionen.split(",");
