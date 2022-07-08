@@ -34,10 +34,8 @@ public class ManuellTest {
         }
     }
     static void spielzug(Game game, String positionen){
-        game.amZug();
         String[] pos = positionen.split(",");
         game.move(Integer.parseInt(pos[0]),Integer.parseInt(pos[1]),Integer.parseInt(pos[2]),Integer.parseInt(pos[3]));
-        game.spielfeld();
     }
 }
 /*  Spielfeld Achsen

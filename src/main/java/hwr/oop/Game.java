@@ -1,6 +1,9 @@
 package hwr.oop;
 
+import java.io.*;
 import java.util.Scanner;
+
+import static java.lang.String.valueOf;
 
 public class Game {
     Field field;
@@ -27,7 +30,6 @@ public class Game {
         String positionen = scan.next();
         return positionen.split(",");
     }
-
     void spielfeld() {
         for (int i = 7; i >= 0; i--) {
             System.out.println();
@@ -35,6 +37,7 @@ public class Game {
                 System.out.print(field.getPositionList()[i][j].getState()+"  ");
             }
         }
+        System.out.println();
     }
 
     boolean isGameWon() {
@@ -55,15 +58,77 @@ public class Game {
         return false;
     }
 
-    void amZug() {
+    private void amZug() {
         if(isWhite){
             System.out.println("Weiß ist am Zug!");
         } else {
             System.out.println("Schwarz ist am Zug!");
         }
     }
+    public void move(String position){
+        //String position = getInputFromPlayer();
+        if(position.equals("save")){
+            saveGame();
+        } else if (position.equals("load")) {
+            loadGame();
+            spielfeld();
+            amZug();
+        }else {
+            String[] positions = position.split(",");
+            try {
+                move(Integer.parseInt(positions[0]),Integer.parseInt(positions[1]),Integer.parseInt(positions[2]),Integer.parseInt(positions[3]));
+                spielfeld();
+                amZug();
+            }catch(ArrayIndexOutOfBoundsException e){
+                System.out.println("Ein angegebenes Feld existiert nicht. "+e);
+            }
+        }
+    }
 
-    public void move(int oldX, int oldY, int newX, int newY) {
+    private void loadGame() {
+        System.out.println("Bitte geb einen Namen vom Save ein.");
+        String fileName = getInputFromPlayer();
+        try {
+            InputStreamReader in = new InputStreamReader(new FileInputStream(fileName+".txt"));
+            BufferedReader reader = new BufferedReader(in);
+            for (int i = 0; i < 8; i++) {
+                int x = 0;
+                for (char str :
+                        reader.readLine().toCharArray()) {
+                    field.getPositionList()[i][x].setState(str-48);
+                    x++;
+                }
+            }
+            isWhite = reader.readLine().equals("true");
+            spielfeld();
+            System.out.println("Erfolgreich geladen!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void saveGame()  {
+        System.out.println("Bitte geb einen Namen für den Save ein.");
+        String fileName = getInputFromPlayer();
+        try {
+            File file = new File(fileName+".txt");
+            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file));
+            String path = file.getPath();
+            System.out.println("The path of this file is: " + path);
+            BufferedWriter writer = new BufferedWriter(out);
+            System.out.println("Erfolgreich erstellt");
+            for (int i = 0; i < field.getPositionList().length; i++) {
+                for (int j = 0; j < field.getPositionList().length; j++) {
+                    writer.write(Integer.toString(field.getPositionList()[i][j].getState()));
+                }
+                writer.newLine();
+            }
+            writer.write(valueOf(isWhite));
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    void move(int oldX, int oldY, int newX, int newY) {
         Figure oldPosition = field.getPositionList()[oldY][oldX];
         Figure newPosition = field.getPositionList()[newY][newX];
         if(newPosition.getState() == 0) {                               //?neues Feld leer
@@ -108,34 +173,36 @@ public class Game {
                             field.getPositionList()[newY+1][oldX-1].setState(0);
                         }else {
                             field.getPositionList()[newY+1][oldX+1].setState(0);
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
+                            isWhite = !isWhite;
+                        }else{
+                            System.out.println("Kein gültiger Zug!");
                         }
-                        isWhite = !isWhite;
-                    }if (newPosition.getState()==1 && newY == 7) {  //wird Weiß Dame
-                        newPosition.setDame();
-                    } else if (newPosition.getState()==2 && newY == 0) {  //wird Schwarz Dame
-                        newPosition.setDame();
+                    }if (oldPosition.getState()==1 && newY == 7) {  //wird Weiß Dame
+                        oldPosition.setDame();
+                    } else if (oldPosition.getState()==2 && newY == 0) {  //wird Schwarz Dame
+                        oldPosition.setDame();
                     }
                 }else {                 //Damen-Logik
                     if (Math.abs(newX-oldX) == 1 && Math.abs(newY-oldY) == 1){              //gültiger Zug
-                        newPosition.setState(oldPosition.getState());
-                        oldPosition.setState(0);
+                        field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
+                        field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                     } else if ((Math.abs(newX-oldX) == 2 && Math.abs(newY-oldY) == 2)) // gültiger Zug schlagen
                     {
                         if (oldY<newY && oldX>newX && !(field.getPositionList()[oldY+1][oldX-1].getState() == oldPosition.getState()) && field.getPositionList()[oldY+1][oldX-1].getState() != 0){ //Gegner links-oben
-                            newPosition.setState(oldPosition.getState());
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                             oldPosition.setState(0);
                             field.getPositionList()[oldY+1][oldX-1].setState(0);
                         } else if (oldY>newY && oldX>newX && !(field.getPositionList()[oldY-1][oldX-1].getState() == oldPosition.getState()) && field.getPositionList()[oldY-1][oldX-1].getState() != 0) { //Gegner links-unten
-                            newPosition.setState(oldPosition.getState());
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                             oldPosition.setState(0);
                             field.getPositionList()[oldY-1][oldX-1].setState(0);
                         } else if (oldY<newY && oldX<newX && !(field.getPositionList()[oldY+1][oldX+1].getState() == oldPosition.getState()) && field.getPositionList()[oldY+1][oldX+1].getState() != 0) { //Gegner rechts-oben
-                            newPosition.setState(oldPosition.getState());
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                             oldPosition.setState(0);
                             field.getPositionList()[oldY+1][oldX+1].setState(0);
                         } else if (oldY>newY && oldX<newX && !(field.getPositionList()[oldY-1][oldX+1].getState() == oldPosition.getState()) && field.getPositionList()[oldY-1][oldX+1].getState() != 0) { //Gegner rechts-unten
-                            newPosition.setState(oldPosition.getState());
-                            oldPosition.setState(0);
+                            field.setFigure(oldPosition,newX,newY,newPosition, oldX,oldY);
                             field.getPositionList()[oldY-1][oldX+1].setState(0);
                         } else {
                             System.out.println("Kein gegner zu schlagen");
@@ -144,7 +211,6 @@ public class Game {
                         System.out.println("Ungültiger Zug!");
                     }
                 }
-
             }else {
                 System.out.println("Falscher Spieler:");
                 amZug();
