@@ -1,6 +1,5 @@
 package hwr.oop;
 
-import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -8,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class FieldTest {
+public class DameTest {
 
     @Test
     void field_initial_positions(){
@@ -53,11 +52,6 @@ public class FieldTest {
     @Test
     void spielzüge(){
         Game game = new Game();
-/*        game.move(2,2,3,3);
-        game.move(3,5,4,4);
-        game.move(0,2,1,3);
-        game.move(4,4,2,2);
-        game.move(1,1,3,3);*/
         game.move("2,2,3,3");
         game.move("3,5,4,4");
         game.move("0,2,1,3");

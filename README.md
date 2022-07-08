@@ -1,4 +1,4 @@
-# HWR OOP Lecture Project Template
+# HWR OOP Project Dame
 
 [TODO]: # (Change README.md Headline to better fit to your project!)
 
@@ -8,17 +8,22 @@ This repository contains a student project created for an ongoing lecture on obj
 
 ## Abstract
 
-[TODO]: # (Write a short description of your project.)
-[TODO]: # (State most important features.)
-[TODO]: # (State the most interesting problems you encountered during the project.)
-
+(Write a short description of your project.)<br/>
+Es handelt sich hierbei um ein Dame-Spiel in der 8x8 Variante, welches durch die Benutzereingabe über die Konsole gespielt werden kann.<br/>
+(State most important features.)<br/>
+Man kann seine Partie unterbrechen und wann anders fortsetzen - durch speichern und laden von Spielständen.<br/>
+(State the most interesting problems you encountered during the project.)<br/>
+X und Y ist nicht immer gleich X und Y.
 ## Feature List
 
 [TODO]: # (For each feature implemented, add a row to the table!)
 
-| Number | Feature | Tests |
-|--------|---------|-------|
-| 1      | /       | /     |
+| Number | Feature                                        | Tests                                                                                                     |
+|--------|------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| 1      | Darstellung des Spielfeldes<br/>(über Konsole) | hwr.oop.ManuellTest.play_game<br/>hwr.oop.DameTest.field_initial_positions<br/>hwr.oop.DameTest.spielfeld |
+| 2      | Verhalten von Spielfiguren                     | hwr.oop.DameTest.dame_move<br/>hwr.oop.DameTest.spielzüge                                                     |
+| 3      | Spielbarkeit durch Benutzereingaben            | hwr.oop.ManuellTest.play_game                                                                             |
+| 4      | Import/ Export von Spielfeldzuständen          | hwr.oop.DameTest.saveLoadGameWon<br/>hwr.oop.DameTest.isGameWon                                           |
 
 
 ## Additional Dependencies
@@ -30,41 +35,8 @@ This repository contains a student project created for an ongoing lecture on obj
 | 1      | /               | /                      | /                    |
 
 ## Instructions
+Um das Spiel zu spielen, muss die play_game() Methode im Manuellen Test gestartet werden. Dann wird entsprechend das Spielfeld
+angezeigt mit:<br/> 0 - leeres Feld; 1 - weiße Figur; 2 - schwarze Figur<br/>
+Spielzüge können vorgenommen werden im Format: X,Y,neuesX,neuesY (Beispiel: "2,2,3,3")<br/>
+Import und Export von Spielfeldzuständen erfolgen über die befehle "save" und "load" und einer Eingabe des Dateinamen
 
-[TODO]: # (Remove these instructions once you finished your fork's setup.)
-
-Use a fork of this repository to do implement your project.
-
-Remember to add this repository as a second remote repository (upstream) and pull from the correct remotes.
-This is necessary, because we might apply changes to this template during the next month.
-
-The following section describes how to add multiple remote repositories to your local repository, which is cloned from the fork.
-
-### Multiple remote repositories
-
-Your local repository should have a reference to both the fork (your own remote repository) and the original remote repository.
-To configure your git remote repositories, use the `git remote` command set.
-
-1. Clone your fork and go enter the repository.
-```
-git clone <fork-url>
-cd <created-folder>
-```
-2. Now your fork is configured as primary remote repository (origin).
-Next to origin, you should add the original repository as a second remote repository (upstream).
-```
-git remote add upstream <repository-url>
-```
-3. Verify that both remotes are configured correctly.
-The following command should list both remotes: origin and upstream.
-```
-git remote -v
-```
-4. To fetch changes from all remote repositories, use:
-```
-git fetch --all
-```
-5. If there are interesting changes (in e.g. the `main` branch) to merge into your branch, use:
-```
-git pull upstream main
-```
