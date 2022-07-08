@@ -8,13 +8,12 @@ public class ManuellTest {
     void play_game(){
         Game game = new Game();
         while(!game.isGameWon()) {
-            game.move(game.move(""););
+            game.move(game.getInputFromPlayer());
         }
     }
     @Test
     void createDame(){
         Game game = new Game();
-        //while(!game.isGameWon()) {
             spielzug(game,"0,2,1,3");
             spielzug(game,"3,5,2,4");
             spielzug(game,"1,3,0,4");
@@ -23,12 +22,11 @@ public class ManuellTest {
             spielzug(game,"0,6,1,5");
             spielzug(game,"1,1,0,2");
             spielzug(game,"1,7,0,6");
-            spielzug(game,"2,6,1,7"); // <-- Weiße Dame
+            spielzug(game,"2,6,1,7");
             spielzug(game,"3,7,2,6");
             spielzug(game,"0,2,1,3");
             spielzug(game,"3,5,4,4");
             spielzug(game,"1,7,3,5");
-        //}
     }
     static void spielzug(Game game, String positionen){
         String[] pos = positionen.split(",");

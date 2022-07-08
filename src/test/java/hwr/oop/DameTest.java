@@ -23,7 +23,6 @@ public class DameTest {
         assertThat(field.getPositionList()[6][0].getState()).isEqualTo(2);
         assertThat(field.getPositionList()[3][3].getState()).isEqualTo(0);
         assertThat(field.getPositionList()[0][1].isDame()).isFalse();
-        assertThat(field.getPositionList()[0][0].getPosition()).isEqualTo("00");
     }
     @Test
     void spielfeld(){
@@ -83,7 +82,7 @@ public class DameTest {
         game.move("0,6,1,5");
         game.move("1,1,0,2");
         game.move("1,7,0,6");
-        game.move("2,6,1,7"); // <-- Weiße Dame
+        game.move("2,6,1,7");
         game.move("3,7,2,6");
         game.move("0,2,1,3");
         game.move("3,5,4,4");

@@ -3,14 +3,10 @@ class Figure {
 
     private int state;
     // 0=empty; 1=white; 2=black
-    private int x;
-    private int y;
     private boolean isDame;
 
-    public Figure(int state, int x, int y, boolean dame) {
+    public Figure(int state, boolean dame) {
         this.state = state;
-        this.x = x;
-        this.y = y;
         this.isDame = dame;
     }
 
@@ -20,11 +16,6 @@ class Figure {
     public boolean isDame() {
         return isDame;
     }
-
-    public String getPosition() {
-        return (Integer.toString(x)+Integer.toString(y));
-    }
-
     public void setState(int state) {
         this.state = state;
     }
